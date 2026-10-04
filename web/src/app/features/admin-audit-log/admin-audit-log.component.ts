@@ -42,7 +42,7 @@ function byCreatedAtAsc(a: AuditEntry, b: AuditEntry): number {
       } @else if (entries().length === 0) {
         <p class="muted" data-testid="audit-log-empty">No audit entries yet.</p>
       } @else {
-        <div class="table-wrap"><table class="data-table" data-testid="audit-log-table">
+        <div class="table-scroll"><table class="data-table" data-testid="audit-log-table">
           <thead>
             <tr><th>When</th><th>Action</th><th>User</th><th>ID</th></tr>
           </thead>

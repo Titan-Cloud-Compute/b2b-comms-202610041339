@@ -77,7 +77,7 @@ function registerCustomerInviteMocks(client: MockApiClient): void {
         @if (customers().length === 0) {
           <p class="muted" data-testid="customer-list-empty">No customers yet.</p>
         } @else {
-          <div class="table-wrap"><table class="data-table" data-testid="customer-list">
+          <div class="table-scroll"><table class="data-table" data-testid="customer-list">
             <thead><tr><th>ID</th><th>Email</th></tr></thead>
             <tbody>
               @for (c of customers(); track c.id) {

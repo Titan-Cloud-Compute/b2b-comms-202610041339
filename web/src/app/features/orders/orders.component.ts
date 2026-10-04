@@ -58,12 +58,12 @@ function registerOrderMocks(client: MockApiClient): void {
         <p data-testid="order-error" role="alert">{{ error() }}</p>
       }
 
-      <section class="card">
+      <section class="card order-queue">
         <h2>Your orders</h2>
         @if (orders().length === 0) {
           <p class="muted" data-testid="orders-empty">No orders yet.</p>
         } @else {
-          <div class="table-wrap"><table class="data-table" data-testid="orders-list">
+          <div class="table-scroll"><table class="data-table" data-testid="orders-list">
             <thead>
               <tr><th>Order</th><th>Status</th>@if (isVendor()) {<th>Confirm</th>}</tr>
             </thead>
