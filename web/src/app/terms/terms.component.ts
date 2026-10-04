@@ -136,7 +136,7 @@ import { RouterLink } from '@angular/router';
     .page-header {
       background: var(--color-primary);
       color: white;
-      padding: 0 2rem;
+      padding: 0 var(--space-8);
     }
     .header-inner {
       max-width: 800px;
@@ -144,13 +144,13 @@ import { RouterLink } from '@angular/router';
       height: 56px;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: var(--space-4);
     }
     .back-link {
       display: flex;
       align-items: center;
-      gap: 0.375rem;
-      color: rgba(255,255,255,0.85);
+      gap: var(--space-1-5);
+      color: var(--color-white-a85);
       text-decoration: none;
       font-size: var(--font-size-sm);
       transition: color 0.15s;
@@ -160,40 +160,40 @@ import { RouterLink } from '@angular/router';
       font-size: var(--font-size-xs);
       font-weight: 500;
       letter-spacing: 0.06em;
-      color: rgba(255,255,255,0.7);
+      color: var(--color-white-a70);
       flex: 1;
       text-align: center;
     }
-    .page-main { flex: 1; padding: 2.5rem 1.5rem; }
+    .page-main { flex: 1; padding: var(--space-10) var(--space-6); }
     .content-card {
       max-width: 800px;
       margin: 0 auto;
       background: white;
       border-radius: var(--radius-card);
       border: 1px solid var(--color-border);
-      padding: 2.5rem 3rem;
+      padding: var(--space-10) var(--space-12);
     }
-    h1 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-primary); margin: 0 0 0.5rem; }
-    .effective-date { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 0 2rem; }
-    section { margin-bottom: 2rem; }
+    h1 { font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-primary); margin: 0 0 var(--space-2); }
+    .effective-date { font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0 0 var(--space-8); }
+    section { margin-bottom: var(--space-8); }
     h2 {
       font-size: var(--font-size-lg); font-weight: 600; color: var(--color-primary);
-      margin: 0 0 0.625rem; padding-bottom: 0.375rem; border-bottom: 1px solid var(--color-neutral-100);
+      margin: 0 0 var(--space-2-5); padding-bottom: var(--space-1-5); border-bottom: 1px solid var(--color-neutral-100);
     }
-    p { font-size: var(--font-size-md); line-height: 1.7; color: var(--color-gray-700); margin: 0 0 0.75rem; }
-    ul { margin: 0.5rem 0 0.75rem 1.25rem; padding: 0; }
-    li { font-size: var(--font-size-md); line-height: 1.7; color: var(--color-gray-700); margin-bottom: 0.25rem; }
+    p { font-size: var(--font-size-md); line-height: 1.7; color: var(--color-gray-700); margin: 0 0 var(--space-3); }
+    ul { margin: var(--space-2) 0 var(--space-3) var(--space-5); padding: 0; }
+    li { font-size: var(--font-size-md); line-height: 1.7; color: var(--color-gray-700); margin-bottom: var(--space-1); }
     a { color: var(--color-info-hover); text-decoration: underline; text-underline-offset: 2px; }
     a:hover { color: var(--color-primary); }
     .page-footer {
       background: white; border-top: 1px solid var(--color-border);
-      padding: 1rem 2rem; display: flex; justify-content: center;
-      align-items: center; gap: 0.75rem; font-size: var(--font-size-xs); color: var(--color-text-secondary);
+      padding: var(--space-4) var(--space-8); display: flex; justify-content: center;
+      align-items: center; gap: var(--space-3); font-size: var(--font-size-xs); color: var(--color-text-secondary);
     }
     .page-footer a { color: var(--color-text-secondary); text-decoration: none; }
     .page-footer a:hover { color: var(--color-primary); }
     .divider { color: var(--color-border); }
-    @media (max-width: 640px) { .content-card { padding: 1.5rem; } h1 { font-size: var(--font-size-xl); } }
+    @media (max-width: 640px) { .content-card { padding: var(--space-6); } h1 { font-size: var(--font-size-xl); } }
   `]
 })
 export class TermsComponent {}

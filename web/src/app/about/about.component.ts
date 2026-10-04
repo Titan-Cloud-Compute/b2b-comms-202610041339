@@ -52,7 +52,7 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
       background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
       display: flex;
       flex-direction: column;
-      padding: 3rem 2rem;
+      padding: var(--space-12) var(--space-8);
       color: white;
     }
 
@@ -72,7 +72,7 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--color-on-primary-muted);
-      margin: 0 0 0.75rem;
+      margin: 0 0 var(--space-3);
     }
 
     .brand-title {
@@ -80,7 +80,7 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
       font-size: var(--font-size-2xl);
       font-weight: 700;
       line-height: 1.2;
-      margin: 0 0 1rem;
+      margin: 0 0 var(--space-4);
       color: white;
     }
 
@@ -89,7 +89,7 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
       line-height: 1.5;
       color: var(--color-on-primary-soft);
       max-width: 28rem;
-      margin: 0 0 2rem;
+      margin: 0 0 var(--space-8);
     }
 
     .journey {
@@ -97,13 +97,13 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
       margin: 0;
       padding: 0;
       display: grid;
-      gap: 1rem;
+      gap: var(--space-4);
       max-width: 28rem;
     }
 
     .journey-item {
       display: flex;
-      gap: 0.9rem;
+      gap: var(--space-3-6);
       align-items: flex-start;
     }
 
@@ -118,15 +118,15 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
       font-family: var(--font-display);
       font-weight: 700;
       font-size: var(--font-size-sm);
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: var(--color-white-a14);
+      border: 1px solid var(--color-white-a28);
       color: var(--color-white);
     }
 
     .journey-text {
       display: flex;
       flex-direction: column;
-      gap: 0.15rem;
+      gap: var(--space-0-6);
     }
 
     .journey-title {
@@ -142,13 +142,13 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
 
     .signin-link {
       align-self: flex-start;
-      margin-top: 2rem;
+      margin-top: var(--space-8);
       display: inline-flex;
       align-items: center;
       min-height: 44px;
-      padding: 0.625rem 1.25rem;
+      padding: var(--space-2-5) var(--space-5);
       border-radius: var(--radius-btn);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      border: 1px solid var(--color-white-a40);
       color: var(--color-white);
       font-size: var(--font-size-md);
       font-weight: 600;
@@ -156,11 +156,11 @@ import { StickyFooterComponent } from '../shared/sticky-footer.component';
     }
 
     .signin-link:hover {
-      background: rgba(255, 255, 255, 0.14);
+      background: var(--color-white-a14);
     }
 
     @media (max-width: 768px) {
-      .brand-panel { padding: 2rem 1.5rem; }
+      .brand-panel { padding: var(--space-8) var(--space-6); }
       .brand-title { font-size: var(--font-size-xl); }
     }
   `]
