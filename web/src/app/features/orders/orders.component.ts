@@ -40,12 +40,12 @@ function registerOrderMocks(client: MockApiClient): void {
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div data-testid="orders-screen">
-      <h1>Orders</h1>
+    <div class="page" data-testid="orders-screen">
+      <div class="page-header"><h1>Orders</h1></div>
 
-      <section data-testid="order-workflow">
+      <section class="card" data-testid="order-workflow">
         <h2>How ordering works</h2>
-        <ul>
+        <ul class="bullet-list">
           <li>Place a purchase order: {{ createOutcome }}.</li>
           <li>Vendor confirmation: {{ confirmOutcome }}.</li>
         </ul>
@@ -58,12 +58,12 @@ function registerOrderMocks(client: MockApiClient): void {
         <p data-testid="order-error" role="alert">{{ error() }}</p>
       }
 
-      <section>
+      <section class="card">
         <h2>Your orders</h2>
         @if (orders().length === 0) {
-          <p data-testid="orders-empty">No orders yet.</p>
+          <p class="muted" data-testid="orders-empty">No orders yet.</p>
         } @else {
-          <table data-testid="orders-list">
+          <div class="table-wrap"><table class="data-table" data-testid="orders-list">
             <thead>
               <tr><th>Order</th><th>Status</th>@if (isVendor()) {<th>Confirm</th>}</tr>
             </thead>
@@ -94,13 +94,13 @@ function registerOrderMocks(client: MockApiClient): void {
                 </tr>
               }
             </tbody>
-          </table>
+          </table></div>
         }
       </section>
 
-      <section>
+      <section class="card">
         <h2>New purchase order</h2>
-        <form data-testid="order-create-form" (ngSubmit)="submit()">
+        <form class="form-grid" data-testid="order-create-form" (ngSubmit)="submit()">
           <label>
             Vendor ID
             <input name="vendorId" data-testid="order-vendor-id" [(ngModel)]="vendorId" required />
@@ -111,16 +111,32 @@ function registerOrderMocks(client: MockApiClient): void {
               <input [name]="'qty-' + $index" type="number" min="1" step="1" [(ngModel)]="item.quantity" aria-label="Quantity" />
               <input [name]="'price-' + $index" type="number" min="0" step="0.01" [(ngModel)]="item.unitPrice" aria-label="Unit price" />
               @if (items.length > 1) {
-                <button type="button" (click)="removeItem($index)">Remove</button>
+                <button type="button" class="btn-secondary" (click)="removeItem($index)">Remove</button>
               }
             </fieldset>
           }
-          <button type="button" (click)="addItem()">Add item</button>
+          <button type="button" class="btn-secondary" (click)="addItem()">Add item</button>
           <button type="submit" data-testid="order-submit" [disabled]="!vendorId || busy()">Submit order</button>
         </form>
       </section>
     </div>
   `,
+  styles: [`
+    :host { display: block; }
+    fieldset {
+      flex: 1 1 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin: 0;
+      padding: var(--space-4);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-secondary);
+    }
+    fieldset input { flex: 1 1 10rem; width: auto; }
+    .data-table td input { width: auto; margin-right: var(--space-2); }
+  `],
 })
 export class OrdersComponent implements OnInit {
   private api = inject(ApiClient);

@@ -32,14 +32,17 @@ function registerSharedChannelMocks(client: MockApiClient): void {
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div data-testid="channels-screen">
+    <div class="page" data-testid="channels-screen">
+      <div class="page-header">
       <h1>Shared channels</h1>
       <p data-testid="channels-outcomes">
         When a vendor creates a shared channel, the channel is stored and displays in both the vendor and customer channel lists.
         When a customer posts in a channel, the message is stored and returns 201 with the created Message record.
       </p>
+      </div>
 
-      <form data-testid="channel-create-form" (ngSubmit)="createChannel()">
+      <div class="card">
+      <form class="form-grid" data-testid="channel-create-form" (ngSubmit)="createChannel()">
         <label for="channel-name">Channel name</label>
         <input id="channel-name" name="name" [(ngModel)]="newName" required />
         <button type="submit" [disabled]="busy() || !newName.trim()">Create channel</button>
@@ -52,30 +55,37 @@ function registerSharedChannelMocks(client: MockApiClient): void {
         <p role="status" data-testid="channels-notice">{{ notice() }}</p>
       }
 
-      <ul data-testid="channel-list">
+      <ul class="item-list channel-list" data-testid="channel-list">
         @for (channel of channels(); track channel.id) {
           <li>
             <button type="button" (click)="select(channel)">{{ channel.name }}</button>
           </li>
         } @empty {
-          <li>No channels yet.</li>
+          <li class="muted">No channels yet.</li>
         }
       </ul>
 
       @if (selected(); as channel) {
-        <form data-testid="message-compose-form" (ngSubmit)="sendMessage()">
+        <form class="form-grid" data-testid="message-compose-form" (ngSubmit)="sendMessage()">
           <label for="message-body">Message to {{ channel.name }}</label>
           <textarea id="message-body" name="body" [(ngModel)]="messageBody" required></textarea>
           <button type="submit" [disabled]="busy() || !messageBody.trim()">Send</button>
         </form>
-        <ul data-testid="message-list">
+        <ul class="item-list" data-testid="message-list">
           @for (m of messages(); track m.id) {
             <li>{{ m.body }}</li>
           }
         </ul>
       }
+      </div>
     </div>
   `,
+  styles: [`
+    :host { display: block; }
+    .form-grid label { flex: 0 0 100%; }
+    .channel-list > li { display: flex; }
+    .channel-list > li > button { flex: 1 1 auto; justify-content: flex-start; }
+  `],
 })
 export class ChannelsComponent implements OnInit {
   private readonly api = inject(ApiClient);

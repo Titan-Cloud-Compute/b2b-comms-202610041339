@@ -38,12 +38,12 @@ function registerCustomerInviteMocks(client: MockApiClient): void {
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div data-testid="admin-customers-screen">
-      <h1>Customer Management</h1>
+    <div class="page" data-testid="admin-customers-screen">
+      <div class="page-header"><h1>Customer Management</h1></div>
 
-      <section>
+      <section class="card">
         <h2>Invite a customer</h2>
-        <form data-testid="customer-invite-form" (ngSubmit)="invite()">
+        <form class="form-grid" data-testid="customer-invite-form" (ngSubmit)="invite()">
           <label>
             Email
             <input
@@ -58,7 +58,7 @@ function registerCustomerInviteMocks(client: MockApiClient): void {
         </form>
 
         @if (result(); as r) {
-          <p data-testid="customer-invite-success">
+          <p class="status" data-testid="customer-invite-success">
             Invitation sent to {{ r.email }} (customer {{ r.customerId }}, invitationSent: {{ r.invitationSent }})
           </p>
         }
@@ -66,29 +66,32 @@ function registerCustomerInviteMocks(client: MockApiClient): void {
           <p data-testid="customer-invite-error" role="alert">{{ e }}</p>
         }
 
-        <ul data-testid="customer-invite-scenarios">
+        <ul class="bullet-list" data-testid="customer-invite-scenarios">
           <li>Invite: a Customer record is created and returns 201 with invitationSent true</li>
           <li>Duplicate invite: the response returns 409 error indicating the customer already exists</li>
         </ul>
       </section>
 
-      <section>
+      <section class="card">
         <h2>Customers</h2>
         @if (customers().length === 0) {
-          <p data-testid="customer-list-empty">No customers yet.</p>
+          <p class="muted" data-testid="customer-list-empty">No customers yet.</p>
         } @else {
-          <table data-testid="customer-list">
+          <div class="table-wrap"><table class="data-table" data-testid="customer-list">
             <thead><tr><th>ID</th><th>Email</th></tr></thead>
             <tbody>
               @for (c of customers(); track c.id) {
                 <tr><td>{{ c.id }}</td><td>{{ c.email }}</td></tr>
               }
             </tbody>
-          </table>
+          </table></div>
         }
       </section>
     </div>
   `,
+  styles: [`
+    :host { display: block; }
+  `],
 })
 export class AdminCustomersComponent implements OnInit {
   private readonly api = inject(ApiClient);

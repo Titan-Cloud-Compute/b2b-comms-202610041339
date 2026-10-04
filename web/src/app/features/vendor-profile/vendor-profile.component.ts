@@ -21,13 +21,13 @@ export interface VendorDocument {
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div data-testid="vendor-profile-screen">
-      <h1>Vendor Profile</h1>
+    <div class="page" data-testid="vendor-profile-screen">
+      <div class="page-header"><h1>Vendor Profile</h1></div>
 
-      <section>
+      <section class="card">
         <h2>Company profile</h2>
-        <p>When you submit, the profile is stored and returns 201 with the created VendorProfile record.</p>
-        <form data-testid="vendor-profile-form" (ngSubmit)="submitProfile()">
+        <p class="muted">When you submit, the profile is stored and returns 201 with the created VendorProfile record.</p>
+        <form class="form-grid" data-testid="vendor-profile-form" (ngSubmit)="submitProfile()">
           <label>
             Company name
             <input name="companyName" [(ngModel)]="companyName" required />
@@ -48,10 +48,10 @@ export interface VendorDocument {
         }
       </section>
 
-      <section>
+      <section class="card">
         <h2>Compliance documents</h2>
-        <p>When you upload, the document is stored with status "pending" and displays in the vendor document library.</p>
-        <form data-testid="vendor-document-form" (ngSubmit)="uploadDocument()">
+        <p class="muted">When you upload, the document is stored with status "pending" and displays in the vendor document library.</p>
+        <form class="form-grid" data-testid="vendor-document-form" (ngSubmit)="uploadDocument()">
           <label>
             Filename
             <input name="filename" [(ngModel)]="filename" required />
@@ -61,7 +61,7 @@ export interface VendorDocument {
         @if (documentError()) {
           <p role="alert">{{ documentError() }}</p>
         }
-        <ul data-testid="vendor-document-library">
+        <ul class="item-list" data-testid="vendor-document-library">
           @for (doc of documents(); track doc.id) {
             <li>{{ doc.filename }} — {{ doc.status }}</li>
           } @empty {
@@ -71,6 +71,9 @@ export interface VendorDocument {
       </section>
     </div>
   `,
+  styles: [`
+    :host { display: block; }
+  `],
 })
 export class VendorProfileComponent implements OnInit {
   private readonly api = inject(ApiClient);

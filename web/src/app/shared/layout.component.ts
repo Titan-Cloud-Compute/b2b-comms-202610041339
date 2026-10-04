@@ -6,7 +6,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { AuthApi } from './api/auth-api.service';
 import { SidebarComponent } from './layout/sidebar.component';
 import { AccountModalComponent } from './layout/account-modal.component';
-import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_MAP } from './layout/nav-items';
+import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_MAP, FEATURE_NAV_GROUPS } from './layout/nav-items';
 
 @Component({
   selector: 'app-layout',
@@ -39,21 +39,7 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
         </button>
       </div>
     }
-    <div class="layout">
-      <!-- Mobile Header -->
-      <header class="mobile-header">
-        <button class="menu-btn" (click)="toggleMobileMenu()" aria-label="Toggle menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            @if (mobileMenuOpen()) {
-              <path d="M6 18L18 6M6 6l12 12"/>
-            } @else {
-              <path d="M3 12h18M3 6h18M3 18h18"/>
-            }
-          </svg>
-        </button>
-        <span class="header-title">{{ headerTitle() }}</span>
-      </header>
-
+    <div class="layout" data-testid="app-shell">
       <!-- Sidebar -->
       <app-sidebar
         [mobileOpen]="mobileMenuOpen()"
@@ -68,6 +54,20 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
 
       <!-- Main Content -->
       <main class="main-content">
+        <!-- Top bar: shared across every routed page (menu toggle on mobile). -->
+        <header class="app-topbar" data-testid="app-topbar">
+          <button class="menu-btn" (click)="toggleMobileMenu()" aria-label="Toggle menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              @if (mobileMenuOpen()) {
+                <path d="M6 18L18 6M6 6l12 12"/>
+              } @else {
+                <path d="M3 12h18M3 6h18M3 18h18"/>
+              }
+            </svg>
+          </button>
+          <span class="header-title" data-testid="app-topbar-title">{{ pageTitle() }}</span>
+          <span class="header-context">{{ headerTitle() }}</span>
+        </header>
         <!-- The routed page lives in a wrapper that carries this component's
              style-encapsulation attribute, so the shell can actually give it
              the leftover vertical space (a rule targeting the routed host
@@ -114,32 +114,38 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
     /* Fixed full-width top bar; the app shell is shifted down by --imp-h so the
        fixed sidebar and main scroll region clear it (the var inherits through
        the DOM, so both this component and the sidebar read the same offset). */
-    .impersonation-banner { position: fixed; top: 0; left: 0; right: 0; min-height: 40px; z-index: 400; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 0.5rem 1rem; background: var(--color-warning-900); color: var(--color-white); font-size: var(--font-size-sm); flex-wrap: wrap; }
-    .impersonation-banner .imp-text { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .impersonation-banner { position: fixed; top: 0; left: 0; right: 0; min-height: 40px; z-index: 400; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: var(--space-4); padding: var(--space-2) var(--space-4); background: var(--color-warning-900); color: var(--color-white); font-size: var(--font-size-sm); flex-wrap: wrap; }
+    .impersonation-banner .imp-text { display: inline-flex; align-items: center; gap: var(--space-1-6); }
     .impersonation-banner strong { font-weight: 700; }
-    .impersonation-banner .imp-exit { padding: 0.3rem 0.9rem; background: var(--color-white); color: var(--color-warning-900); border: none; border-radius: var(--radius-sm); font-size: var(--font-size-sm); font-weight: 700; cursor: pointer; }
+    .impersonation-banner .imp-exit { padding: var(--space-1-2) var(--space-3-6); background: var(--color-white); color: var(--color-warning-900); border: none; border-radius: var(--radius-sm); font-size: var(--font-size-sm); font-weight: 700; cursor: pointer; }
     .impersonation-banner .imp-exit:hover { background: var(--color-error-bg); }
     .layout {
       display: flex;
-      margin-top: var(--imp-h, 0px);
+      margin-top: var(--imp-h, 0);
       min-height: calc(100vh - var(--imp-h, 0px));
       background: var(--color-bg-secondary);
     }
 
-    /* Mobile Header */
-    .mobile-header {
-      display: none;
-      position: fixed;
+    /* Top bar (all viewports) */
+    .app-topbar {
+      position: sticky;
       top: 0;
-      left: 0;
-      right: 0;
-      height: 56px;
-      background: white;
+      flex: 0 0 auto;
+      height: var(--shell-topbar-h);
+      background: var(--color-surface);
       border-bottom: 1px solid var(--color-border);
-      padding: 0 1rem;
+      padding: 0 var(--space-8);
+      display: flex;
       align-items: center;
+      gap: var(--space-3);
       z-index: 100;
       box-shadow: var(--shadow-nav);
+    }
+
+    .header-context {
+      color: var(--color-text-tertiary);
+      font-size: var(--font-size-sm);
+      white-space: nowrap;
     }
 
     .menu-btn {
@@ -155,26 +161,32 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
       border-radius: var(--radius-btn);
     }
 
+    .app-topbar .menu-btn { display: none; }
+
     .menu-btn:active { background: var(--color-bg-tertiary); }
 
     .header-title {
+      font-family: var(--font-display);
       font-weight: 600;
       color: var(--color-text-primary);
       font-size: var(--font-size-lg);
       flex: 1;
-      text-align: center;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .mobile-lang-toggle {
       display: flex;
-      gap: 0.125rem;
+      gap: var(--space-0-5);
       background: var(--color-bg-tertiary);
-      padding: 2px;
+      padding: var(--space-0-5);
       border-radius: var(--radius-sm);
     }
 
     .mobile-lang-btn {
-      padding: 0.25rem 0.5rem;
+      padding: var(--space-1) var(--space-2);
       font-size: var(--font-size-xs);
       font-weight: 600;
       color: var(--color-text-secondary);
@@ -187,7 +199,7 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
     }
 
     .mobile-lang-btn.active {
-      background: white;
+      background: var(--color-surface);
       color: var(--color-primary);
       box-shadow: var(--shadow-card);
     }
@@ -195,7 +207,7 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
     /* Main Content */
     .main-content {
       flex: 1;
-      margin-left: 260px;
+      margin-left: var(--shell-sidebar-w);
       padding: 0;
       overflow-y: auto;
       overflow-x: hidden;
@@ -273,7 +285,7 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--color-overlay);
       z-index: 150;
     }
 
@@ -284,8 +296,8 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
       bottom: 0;
       left: 0;
       right: 0;
-      height: 64px;
-      background: white;
+      height: var(--shell-bottomnav-h);
+      background: var(--color-surface);
       border-top: 1px solid var(--color-border);
       padding-bottom: env(safe-area-inset-bottom);
       z-index: 100;
@@ -298,7 +310,7 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.25rem;
+      gap: var(--space-1);
       color: var(--color-text-secondary);
       font-size: var(--font-size-xs);
       font-weight: 500;
@@ -320,14 +332,15 @@ import { NavItem, FIRM_NAV_ITEMS, ADMIN_NAV_ITEMS, SHARED_NAV_ITEMS, ADMIN_TAB_M
 
     /* Mobile Styles */
     @media (max-width: 768px) {
-      .mobile-header { display: flex; }
+      .app-topbar { padding: 0 var(--space-3); }
+      .app-topbar .menu-btn { display: flex; }
+      .header-context { display: none; }
       .mobile-overlay { display: block; }
 
       .main-content {
         margin-left: 0;
         padding: 0;
-        padding-top: 56px;
-        padding-bottom: calc(64px + env(safe-area-inset-bottom));
+        padding-bottom: calc(var(--shell-bottomnav-h) + env(safe-area-inset-bottom));
         height: 100svh;
         height: 100vh;
         overflow-x: hidden;
@@ -390,6 +403,7 @@ export class LayoutComponent implements OnInit {
     // admin research chat. Every other admin tab keeps the normal
     // grow-never-shrink behaviour so long tables can scroll the shell.
     this.routedAreaFits.set(path.startsWith('/admin/research-chat'));
+    this.currentPath.set(path);
   }
 
   ngOnInit() {
@@ -405,6 +419,21 @@ export class LayoutComponent implements OnInit {
       this.showAccountModal.set(qp.get('dialog') === 'account');
     });
   }
+
+  /** Current URL path, kept in sync on navigation (drives the top-bar title). */
+  private currentPath = signal('');
+
+  pageTitle = computed(() => {
+    const path = this.currentPath();
+    const all: NavItem[] = [
+      ...FIRM_NAV_ITEMS,
+      ...FEATURE_NAV_GROUPS.flatMap(g => g.items),
+      ...ADMIN_NAV_ITEMS,
+      ...SHARED_NAV_ITEMS,
+    ];
+    const match = all.find(i => i.path === path) ?? all.find(i => path.startsWith(i.path + '/'));
+    return match?.label ?? this.headerTitle();
+  });
 
   headerTitle = computed(() => {
     return this.auth.hasAdminRole()

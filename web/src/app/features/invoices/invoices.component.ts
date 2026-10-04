@@ -14,34 +14,34 @@ export const INVOICES_PATH = '/api/invoices';
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div data-testid="invoices-screen">
-      <h1>Invoices</h1>
+    <div class="page" data-testid="invoices-screen">
+      <div class="page-header"><h1>Invoices</h1></div>
 
-      <section>
+      <section class="card">
         <h2>Generate invoice</h2>
-        <p>Generate an invoice for a confirmed order: the invoice is created and returns 201 with the invoice id available for download.</p>
-        <form data-testid="invoice-generate-form" (ngSubmit)="generate()">
+        <p class="muted">Generate an invoice for a confirmed order: the invoice is created and returns 201 with the invoice id available for download.</p>
+        <form class="form-grid" data-testid="invoice-generate-form" (ngSubmit)="generate()">
           <label>Order id <input name="orderId" [(ngModel)]="orderId" required /></label>
           <label>Amount <input name="amount" type="number" step="0.01" min="0" [(ngModel)]="amount" required /></label>
           <button type="submit" [disabled]="busy">Generate invoice</button>
         </form>
         @if (created) {
-          <p data-testid="invoice-created">Invoice created: <strong>{{ created.id }}</strong></p>
+          <p class="status" data-testid="invoice-created">Invoice created: <strong>{{ created.id }}</strong></p>
         }
         @if (generateError) {
           <p role="alert">{{ generateError }}</p>
         }
       </section>
 
-      <section>
+      <section class="card invoice-viewer">
         <h2>Download invoice</h2>
-        <p>Request the download link: the response returns 200 with a downloadUrl pointing to the stored invoice.</p>
-        <form data-testid="invoice-download-form" (ngSubmit)="download()">
+        <p class="muted">Request the download link: the response returns 200 with a downloadUrl pointing to the stored invoice.</p>
+        <form class="form-grid" data-testid="invoice-download-form" (ngSubmit)="download()">
           <label>Invoice id <input name="invoiceId" [(ngModel)]="invoiceId" required /></label>
           <button type="submit" [disabled]="busy">Get download link</button>
         </form>
         @if (downloadLink) {
-          <p data-testid="invoice-download-link"><a [href]="downloadLink.downloadUrl" target="_blank" rel="noopener">Download invoice {{ downloadLink.id }}</a></p>
+          <p class="status" data-testid="invoice-download-link"><a [href]="downloadLink.downloadUrl" target="_blank" rel="noopener">Download invoice {{ downloadLink.id }}</a></p>
         }
         @if (downloadError) {
           <p role="alert">{{ downloadError }}</p>
@@ -49,6 +49,9 @@ export const INVOICES_PATH = '/api/invoices';
       </section>
     </div>
   `,
+  styles: [`
+    :host { display: block; }
+  `],
 })
 export class InvoicesComponent {
   private readonly api = inject(ApiClient);

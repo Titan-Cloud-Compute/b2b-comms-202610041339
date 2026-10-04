@@ -27,20 +27,22 @@ function byCreatedAtAsc(a: AuditEntry, b: AuditEntry): number {
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div data-testid="admin-audit-log-screen">
-      <h1>Audit Log</h1>
-      <p data-testid="audit-log-view-outcome">a list of AuditEntry records is displayed in chronological order returns 200</p>
+    <div class="page" data-testid="admin-audit-log-screen">
+      <div class="page-header">
+        <h1>Audit Log</h1>
+        <p data-testid="audit-log-view-outcome">a list of AuditEntry records is displayed in chronological order returns 200</p>
+      </div>
 
       @if (error()) {
         <p role="alert" data-testid="audit-log-error">{{ error() }}</p>
       }
 
       @if (loading()) {
-        <p data-testid="audit-log-loading">Loading…</p>
+        <p class="muted" data-testid="audit-log-loading">Loading…</p>
       } @else if (entries().length === 0) {
-        <p data-testid="audit-log-empty">No audit entries yet.</p>
+        <p class="muted" data-testid="audit-log-empty">No audit entries yet.</p>
       } @else {
-        <table data-testid="audit-log-table">
+        <div class="table-wrap"><table class="data-table" data-testid="audit-log-table">
           <thead>
             <tr><th>When</th><th>Action</th><th>User</th><th>ID</th></tr>
           </thead>
@@ -54,21 +56,26 @@ function byCreatedAtAsc(a: AuditEntry, b: AuditEntry): number {
               </tr>
             }
           </tbody>
-        </table>
+        </table></div>
       }
 
+      <section class="card">
       <h2>Record entry</h2>
-      <p data-testid="audit-log-record-outcome">the AuditEntry is stored and returns 201 with the created record</p>
-      <form data-testid="audit-log-record-form" (ngSubmit)="record()">
+      <p class="muted" data-testid="audit-log-record-outcome">the AuditEntry is stored and returns 201 with the created record</p>
+      <form class="form-grid" data-testid="audit-log-record-form" (ngSubmit)="record()">
         <label>Action <input name="action" [(ngModel)]="action" required /></label>
         <label>User ID <input name="userId" [(ngModel)]="userId" required /></label>
         <button type="submit" [disabled]="saving() || !action.trim() || !userId.trim()">Record</button>
       </form>
       @if (lastCreated(); as c) {
-        <p data-testid="audit-log-created">Recorded {{ c.action }} ({{ c.id }})</p>
+        <p class="status" data-testid="audit-log-created">Recorded {{ c.action }} ({{ c.id }})</p>
       }
+      </section>
     </div>
   `,
+  styles: [`
+    :host { display: block; }
+  `],
 })
 export class AdminAuditLogComponent implements OnInit {
   private readonly api = inject(ApiClient);

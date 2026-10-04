@@ -20,30 +20,30 @@ export const DISABLE_ALL_OUTCOME =
   standalone: true,
   imports: [FormsModule],
   template: `
-    <div data-testid="settings-notifications-screen">
-      <h1>Notification Settings</h1>
+    <div class="page" data-testid="settings-notifications-screen">
+      <div class="page-header"><h1>Notification Settings</h1></div>
       @if (loading) {
-        <p>Loading preferences…</p>
+        <p class="muted">Loading preferences…</p>
       }
-      <form (ngSubmit)="save()">
-        <label>
+      <form class="card form-grid" (ngSubmit)="save()">
+        <label class="check">
           <input type="checkbox" data-testid="pref-order-alerts" name="orderAlerts"
                  [(ngModel)]="orderAlerts" [disabled]="saving" />
           Order alerts
         </label>
-        <label>
+        <label class="check">
           <input type="checkbox" data-testid="pref-message-alerts" name="messageAlerts"
                  [(ngModel)]="messageAlerts" [disabled]="saving" />
           Message alerts
         </label>
         <button type="submit" data-testid="pref-save" [disabled]="saving">Save</button>
       </form>
-      <ul data-testid="pref-outcomes">
+      <ul class="bullet-list" data-testid="pref-outcomes">
         <li>{{ configureOutcome }}</li>
         <li>{{ disableAllOutcome }}</li>
       </ul>
       @if (stored) {
-        <p data-testid="pref-stored">
+        <p class="card" data-testid="pref-stored">
           Stored: order alerts {{ stored.orderAlerts ? 'on' : 'off' }},
           message alerts {{ stored.messageAlerts ? 'on' : 'off' }}
         </p>
@@ -56,6 +56,9 @@ export const DISABLE_ALL_OUTCOME =
       }
     </div>
   `,
+  styles: [`
+    :host { display: block; }
+  `],
 })
 export class SettingsNotificationsComponent implements OnInit {
   private readonly api = inject(ApiClient);

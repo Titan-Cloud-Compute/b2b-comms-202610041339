@@ -1,5 +1,5 @@
 export const SIDEBAR_TEMPLATE = `
-    <aside class="sidebar" [class.mobile-open]="mobileOpen()">
+    <aside class="sidebar" data-testid="app-sidebar" [class.mobile-open]="mobileOpen()">
       <div class="sidebar-header">
         <div class="logo">
           <svg width="32" height="32" viewBox="0 0 48 48" fill="none">
@@ -22,7 +22,7 @@ export const SIDEBAR_TEMPLATE = `
 
       <nav class="sidebar-nav">
         @if (!auth.hasAdminRole()) {
-          <div class="nav-group-label">{{ 'Workspace' }}</div>
+          <div class="nav-group-label">{{ 'Main' }}</div>
           @for (item of firmNavItems; track item.label) {
             <a
               [routerLink]="item.path"
@@ -54,10 +54,28 @@ export const SIDEBAR_TEMPLATE = `
           }
         }
 
+        @for (group of featureNavGroups; track group.label) {
+          <div class="nav-group-label">{{ group.label }}</div>
+          @for (item of group.items; track item.path) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: true}"
+              class="nav-item"
+              (click)="navClick.emit()"
+            >
+              <span class="nav-icon" [innerHTML]="item.icon | safeHtml"></span>
+              <span class="nav-label">{{ item.label }}</span>
+            </a>
+          }
+        }
+
         <!-- Role-agnostic entries (saved searches): every signed-in user owns
              their own saved searches, so this group renders outside both role
              branches above. -->
-        <div class="nav-group-label">{{ 'Personal' }}</div>
+        @if (sharedNavItems.length) {
+          <div class="nav-group-label">{{ 'Personal' }}</div>
+        }
         @for (item of sharedNavItems; track item.label) {
           <a
             [routerLink]="item.path"
