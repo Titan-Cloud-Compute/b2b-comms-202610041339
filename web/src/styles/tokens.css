@@ -120,6 +120,12 @@
   --color-accent-600: #0369a1;
   --color-accent-700: #075985;
   --color-white: #ffffff;
+  /* White-alpha overlays (public/auth pages 2026-10-04) */
+  --color-white-a14: rgba(255, 255, 255, 0.14);
+  --color-white-a28: rgba(255, 255, 255, 0.28);
+  --color-white-a40: rgba(255, 255, 255, 0.40);
+  --color-white-a70: rgba(255, 255, 255, 0.70);
+  --color-white-a85: rgba(255, 255, 255, 0.85);
 }
 
 /* ---- Typography (rebrand 2026-09-05): Sofia Sans (Cyrillic-first display) + Inter (body), loaded in index.html ---- */
@@ -156,7 +162,9 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-10: 2.5rem;
+  --space-11: 2.75rem;
   --space-12: 3rem;
+  --space-px: 1px;
 
   /* App shell geometry */
   --shell-sidebar-w: 260px;
